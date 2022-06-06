@@ -9,11 +9,13 @@ const SignIn = () => {
       const { additionalUserInfo, user } = await auth.signInWithPopup(provider);
 
       if (additionalUserInfo.isNewUser) {
+        // if user is a new user - save it to the database
         await database.ref(`/profiles/${user.uid}`).set({
           name: user.displayName,
           createdAt: firebase.database.ServerValue.TIMESTAMP,
         });
       }
+
       Alert.success('Signed in', 4000);
     } catch (err) {
       Alert.error(err.message, 4000);
@@ -23,6 +25,7 @@ const SignIn = () => {
   const onFacebookSignIn = () => {
     signInWithProvider(new firebase.auth.FacebookAuthProvider());
   };
+
   const onGoogleSignIn = () => {
     signInWithProvider(new firebase.auth.GoogleAuthProvider());
   };
